@@ -25,13 +25,14 @@ public class SpecialityController {
 		this.specialityRepository = specialityRepository;
 	}
 
+	// http://localhost:8080/api/speciality
 	@GetMapping()
 	public List<Speciality> getAllSpeciality() {
 		System.out.println("controller calling getAllSpeciality");
 		return specialityRepository.findAll();
 	}
 
-	//http://localhost:8080/api/speciality/add
+	// http://localhost:8080/api/speciality/add
 	@PostMapping("/add")
 	public Speciality createSpeciality(@RequestBody Speciality specialityObject) {
 		System.out.println("controller calling createSpeciality");

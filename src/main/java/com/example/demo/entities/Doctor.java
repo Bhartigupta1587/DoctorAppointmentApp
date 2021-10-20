@@ -18,83 +18,80 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 @Table(name = "doctors")
 public class Doctor {
 
-    @Id
-    @Column
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-    @Column
-    private String name;
-    @Column
-    private String npiNumber;
-    private String Gender;
-    
-    @OneToOne
-    @JoinColumn(name = "speciality_id")
-    private Speciality speciality;
-    @JsonIgnore
-    @OneToMany(mappedBy = "doctor")
-    private List<Appointment> appointments;
+	@Id
+	@Column
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
+	@Column
+	private String name;
+	@Column
+	private String npiNumber;
+	private String Gender;
 
-    public Doctor() {
-    }
+	@OneToOne
+	@JoinColumn(name = "speciality_id")
+	private Speciality speciality;
+	@JsonIgnore
+	@OneToMany(mappedBy = "doctor")
+	private List<Appointment> appointments;
 
-    public Doctor(String name, String gender, String npiNumber) {
-        this.name = name;
-        Gender = gender;
-        this.npiNumber = npiNumber;
-    }
+	public Doctor() {
+	}
 
-    public Long getId() {
-        return id;
-    }
+	public Doctor(String name, String gender, String npiNumber) {
+		this.name = name;
+		Gender = gender;
+		this.npiNumber = npiNumber;
+	}
 
-    public String getName() {
-        return name;
-    }
+	public Long getId() {
+		return id;
+	}
 
-    public void setName(String name) {
-        this.name = name;
-    }
+	public String getName() {
+		return name;
+	}
 
-    public String getGender() {
-        return Gender;
-    }
+	public void setName(String name) {
+		this.name = name;
+	}
 
-    public void setGender(String gender) {
-        Gender = gender;
-    }
+	public String getGender() {
+		return Gender;
+	}
 
-    public String getNpiNumber() {
-        return npiNumber;
-    }
+	public void setGender(String gender) {
+		Gender = gender;
+	}
 
-    public void setNpiNumber(String profileDescription) {
-        this.npiNumber = profileDescription;
-    }
+	public String getNpiNumber() {
+		return npiNumber;
+	}
 
-    @Override
-    public String toString() {
-        return "Doctor{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", Gender='" + Gender + '\'' +
-                ", profileDescription='" + npiNumber + '\'' +
-                '}';
-    }
+	public void setNpiNumber(String profileDescription) {
+		this.npiNumber = profileDescription;
+	}
 
-    public List<Appointment> getAppointments() {
-        return appointments;
-    }
+	@Override
+	public String toString() {
+		return "Doctor{" + "id=" + id + ", name='" + name + '\'' + ", Gender='" + Gender + '\''
+				+ ", profileDescription='" + npiNumber + '\'' + '}';
+	}
 
-    public void setAppointments(List<Appointment> appointments) {
-        this.appointments = appointments;
-    }
+	public List<Appointment> getAppointments() {
+		return appointments;
+	}
 
-    public Speciality getSpeciality() {
-        return speciality;
-    }
+	public void setAppointments(List<Appointment> appointments) {
+		this.appointments = appointments;
+	}
 
-    public void setSpeciality(Speciality speciality) {
-        this.speciality = speciality;
-    }
+	public Speciality getSpeciality() {
+		return speciality;
+	}
+
+	public void setSpeciality(Speciality speciality) {
+		this.speciality = speciality;
+	}
+
 }

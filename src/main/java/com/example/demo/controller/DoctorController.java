@@ -22,63 +22,63 @@ import com.example.demo.repository.SpecialityRepository;
 @RestController
 @RequestMapping("/api/doctors")
 public class DoctorController {
-	
-	 private DoctorRepository doctorRepository;
-	    private SpecialityRepository specialityRepository;
 
-	    @Autowired
-	    public void setSpecialityRepository(SpecialityRepository specialityRepository) {
-	        this.specialityRepository = specialityRepository;
-	    }
+	private DoctorRepository doctorRepository;
+	private SpecialityRepository specialityRepository;
 
-	    @Autowired
-	    public void setDoctorRepository(DoctorRepository doctorRepository) {
-	        this.doctorRepository = doctorRepository;
-	    }
-	
-	//http://localhost:9092/api/doctors
-    @GetMapping()
-    public List<Doctor> getAllDoctors() {
-        System.out.println("controller calling alldoc");
-        return doctorRepository.findAll();
-    }
+	@Autowired
+	public void setSpecialityRepository(SpecialityRepository specialityRepository) {
+		this.specialityRepository = specialityRepository;
+	}
 
-    //http://localhost:9092/api/doctors/{doctorName}
-    @GetMapping("{doctorName}")
-    public Doctor getDoctor(@PathVariable String doctorName) {
-        System.out.println("service valling get doc");
-        Doctor doctor = doctorRepository.findByName(doctorName);
-        if (doctor != null) {
-            return doctor;
-        } else
-            throw new InformationNotFoundException("Doctor " + doctorName + "not exist here");
-    }
+	@Autowired
+	public void setDoctorRepository(DoctorRepository doctorRepository) {
+		this.doctorRepository = doctorRepository;
+	}
 
-    //http://localhost:9092/api/doctors/add/{specialityId}
-    @PostMapping("/add/{specialityId}")
-    public Doctor createDoctor(@RequestBody Doctor doctorObject, @PathVariable Long specialityId) {
-        System.out.println("controller calling createDoc");
-        Optional<Speciality> speciality = specialityRepository.findById(specialityId);
-        if (speciality.isPresent()) {
-            doctorObject.setSpeciality(speciality.get());
-        }
-        Doctor doctor = doctorRepository.findByName(doctorObject.getName());
-        if (doctor != null) {
-            throw new InformationExistException("doctor " + doctor.getName() + "already exist");
-        } else
-        
-            return doctorRepository.save(doctorObject);
-    }
+	// http://localhost:8080/api/doctors
+	@GetMapping()
+	public List<Doctor> getAllDoctors() {
+		System.out.println("controller calling alldoc");
+		return doctorRepository.findAll();
+	}
 
-    //http://localhost:9092/api/doctors/delete/{doctorId}
-    @DeleteMapping("/delete/{doctorId}")
-    public String deleteDoctor(@PathVariable Long doctorId) {
-        System.out.println("controller calling deleteDoctor");
-        Optional<Doctor> doctor = doctorRepository.findById(doctorId);
-        if (doctor.isPresent()) {
-            doctorRepository.deleteById(doctorId);
-            return "Doctor " + doctorId + " deleted";
-        } else
-            throw new InformationNotFoundException("Doctor " + doctorId + "is not exist");
-    }
+	// http://localhost:8080/api/doctors/{doctorName}
+	@GetMapping("{doctorName}")
+	public Doctor getDoctor(@PathVariable String doctorName) {
+		System.out.println("service valling get doc");
+		Doctor doctor = doctorRepository.findByName(doctorName);
+		if (doctor != null) {
+			return doctor;
+		} else
+			throw new InformationNotFoundException("Doctor " + doctorName + "not exist here");
+	}
+
+	// http://localhost:8080/api/doctors/add/{specialityId}
+	@PostMapping("/add/{specialityId}")
+	public Doctor createDoctor(@RequestBody Doctor doctorObject, @PathVariable Long specialityId) {
+		System.out.println("controller calling createDoc");
+		Optional<Speciality> speciality = specialityRepository.findById(specialityId);
+		if (speciality.isPresent()) {
+			doctorObject.setSpeciality(speciality.get());
+		}
+		Doctor doctor = doctorRepository.findByName(doctorObject.getName());
+		if (doctor != null) {
+			throw new InformationExistException("doctor " + doctor.getName() + "already exist");
+		} else
+
+			return doctorRepository.save(doctorObject);
+	}
+
+	// http://localhost:8080/api/doctors/delete/{doctorId}
+	@DeleteMapping("/delete/{doctorId}")
+	public String deleteDoctor(@PathVariable Long doctorId) {
+		System.out.println("controller calling deleteDoctor");
+		Optional<Doctor> doctor = doctorRepository.findById(doctorId);
+		if (doctor.isPresent()) {
+			doctorRepository.deleteById(doctorId);
+			return "Doctor " + doctorId + " deleted";
+		} else
+			throw new InformationNotFoundException("Doctor " + doctorId + "is not exist");
+	}
 }

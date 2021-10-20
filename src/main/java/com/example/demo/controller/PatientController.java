@@ -18,7 +18,6 @@ import com.example.demo.exception.InformationExistException;
 import com.example.demo.exception.InformationNotFoundException;
 import com.example.demo.repository.PatientRepository;
 
-
 @Controller
 @RequestMapping("/api/patients")
 public class PatientController {
@@ -26,45 +25,56 @@ public class PatientController {
 	@Autowired
 	private PatientRepository patientRepository;
 
-    //http://localhost:9092/api/patients
-    @GetMapping()
-    public @ResponseBody List<Patient> getAllPatient() {
-        System.out.println("controller calling patient");
-        return patientRepository.findAll();
+	// http://localhost:8080/api/patients
+	@GetMapping()
+	public @ResponseBody List<Patient> getAllPatient() {
+		System.out.println("controller calling patient");
+		return patientRepository.findAll();
 
-    }
+	}
 
-    //http://localhost:9092/api/patients/{patientName}
-    @GetMapping("/{patientName}")
-    public @ResponseBody Optional<Patient> getPatient(@PathVariable String patientName) {
-        System.out.println("controller calling getPatient");
-        Optional<Patient> patient = patientRepository.findByFirstName(patientName);
-        if (patient.isPresent()) {
-            return patient;
-        } else
-            throw new InformationNotFoundException("Patient " + patientName + " is not found");
-    }
+	// http://localhost:8080/api/patients/{patientName}
+	@GetMapping("/{patientName}")
+	public @ResponseBody Optional<Patient> getPatient(@PathVariable String patientName) {
+		System.out.println("controller calling getPatient");
+		Optional<Patient> patient = patientRepository.findByFirstName(patientName);
+		if (patient.isPresent()) {
+			return patient;
+		} else
+			throw new InformationNotFoundException("Patient " + patientName + " is not found");
+	}
 
-    //http://localhost:9092/api/patients/add
-    @PostMapping("/add")
-    public @ResponseBody Patient createPatient(@RequestBody Patient patientObject) {
-        System.out.println("controller calling createPatient");
-        Optional<Patient> patient = patientRepository.findByFirstName(patientObject.getFirstName());
-        if (patient.isPresent()) {
-            throw new InformationExistException("Patient " + patientObject.getFirstName() + "already exist");
-        } else
-            return patientRepository.save(patientObject);
-    }
+	// http://localhost:8080/api/patients/add
+	@PostMapping("/add")
+	public @ResponseBody Patient createPatient(@RequestBody Patient patientObject) {
+		System.out.println("controller calling createPatient");
+		Optional<Patient> patient = patientRepository.findByFirstName(patientObject.getFirstName());
+		if (patient.isPresent()) {
+			throw new InformationExistException("Patient " + patientObject.getFirstName() + "already exist");
+		} else
+			return patientRepository.save(patientObject);
+	}
 
-    //http://localhost:9092/api/patients/delete/{patientid}
-    @DeleteMapping("/delete/{patientId}")
-    public @ResponseBody String deletePatient(@PathVariable Long patientId) {
-        System.out.println("controller calling deletePatient");
-        Optional<Patient> patient = patientRepository.findById(patientId);
-        if (patient.isPresent()) {
-            patientRepository.deleteById(patientId);
-            return "patient deleted";
-        } else
-            throw new InformationNotFoundException("Patient " + patientId + " is not exist");
-    }
+	// http://localhost:8080/api/patients/update
+	@PostMapping("/update")
+	public @ResponseBody Patient updatePatient(@RequestBody Patient patientObject) {
+		System.out.println("controller calling updatePatient");
+		Optional<Patient> patient = patientRepository.findByFirstName(patientObject.getFirstName());
+		if (!(patient.isPresent())) {
+			throw new InformationExistException("Patient " + patientObject.getFirstName() + "already exist");
+		} else
+			return patientRepository.save(patientObject);
+	}
+
+	// http://localhost:8080/api/patients/delete/{patientid}
+	@DeleteMapping("/delete/{patientId}")
+	public @ResponseBody String deletePatient(@PathVariable Long patientId) {
+		System.out.println("controller calling deletePatient");
+		Optional<Patient> patient = patientRepository.findById(patientId);
+		if (patient.isPresent()) {
+			patientRepository.deleteById(patientId);
+			return "patient deleted";
+		} else
+			throw new InformationNotFoundException("Patient " + patientId + " is not exist");
+	}
 }
