@@ -27,7 +27,7 @@ public class Doctor {
     @Column
     private String npiNumber;
     private String Gender;
-    @JsonIgnore
+    
     @OneToOne
     @JoinColumn(name = "speciality_id")
     private Speciality speciality;

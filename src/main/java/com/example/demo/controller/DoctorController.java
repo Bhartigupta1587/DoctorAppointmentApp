@@ -66,6 +66,7 @@ public class DoctorController {
         if (doctor != null) {
             throw new InformationExistException("doctor " + doctor.getName() + "already exist");
         } else
+        
             return doctorRepository.save(doctorObject);
     }
 
