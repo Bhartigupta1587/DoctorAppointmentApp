@@ -1,8 +1,13 @@
 package com.example.demo.controller;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -10,6 +15,8 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -64,8 +71,16 @@ public class UserController {
 
 	// http://localhost:8080/auth/users/login
 	@PostMapping("/login")
-	public ResponseEntity<?> loginUser(@RequestBody LoginRequest loginRequest) {
+	public ResponseEntity<?> loginUser(@Valid @RequestBody LoginRequest loginRequest, BindingResult bindingResult) {
 		System.out.println("calling loginUser");
+		if(bindingResult.hasErrors()){
+		    bindingResult.getAllErrors().stream().forEach(System.out::println);
+		    List<String> returnErrors = new ArrayList<>();
+		    for(ObjectError error : bindingResult.getAllErrors()){
+		        returnErrors.add(error.getDefaultMessage());
+		    }
+		    return new ResponseEntity<>(returnErrors, HttpStatus.BAD_REQUEST);
+		}
 		try {
 			authenticationManager.authenticate(
 					new UsernamePasswordAuthenticationToken(loginRequest.getUserName(), loginRequest.getPassword()));

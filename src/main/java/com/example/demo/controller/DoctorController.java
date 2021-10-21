@@ -69,6 +69,19 @@ public class DoctorController {
 
 			return doctorRepository.save(doctorObject);
 	}
+	
+	// http://localhost:8080/api/doctors/add/{specialityId}
+		@PostMapping("/update")
+		public Doctor updateDoctor(@RequestBody Doctor doctorObject) {
+			System.out.println("controller calling createDoc");
+			Doctor doctor = doctorRepository.findByName(doctorObject.getName());
+			if (doctor != null) {
+				throw new InformationExistException("doctor " + doctor.getName() + "already exist");
+			} else
+
+				return doctorRepository.save(doctorObject);
+		}
+
 
 	// http://localhost:8080/api/doctors/delete/{doctorId}
 	@DeleteMapping("/delete/{doctorId}")
@@ -77,7 +90,7 @@ public class DoctorController {
 		Optional<Doctor> doctor = doctorRepository.findById(doctorId);
 		if (doctor.isPresent()) {
 			doctorRepository.deleteById(doctorId);
-			return "Doctor " + doctorId + " deleted";
+			return "Doctor deleted";
 		} else
 			throw new InformationNotFoundException("Doctor " + doctorId + "is not exist");
 	}
